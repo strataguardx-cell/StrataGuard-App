@@ -9,12 +9,18 @@ import com.strataguard.app.ui.auth.ForgotPasswordScreen
 import com.strataguard.app.ui.auth.LoginScreen
 import com.strataguard.app.ui.auth.RegisterScreen
 import com.strataguard.app.ui.home.HomeScreen
+import com.strataguard.app.ui.strata.SearchStrataScreen
+import com.strataguard.app.ui.strata.StrataPlanDetailScreen
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Register : Screen("register")
     object ForgotPassword : Screen("forgot_password")
     object Home : Screen("home")
+    object SearchStrata : Screen("search_strata")
+    data class StrataPlanDetail(val spNumber: String) : Screen("strata_plan/$spNumber") {
+        companion object { const val ROUTE = "strata_plan/{spNumber}" }
+    }
 }
 
 @Composable
@@ -59,6 +65,22 @@ fun AppNavigation(
                         popUpTo(Screen.Home.route) { inclusive = true }
                     }
                 },
+                onSearchStrata = { navController.navigate(Screen.SearchStrata.route) },
+            )
+        }
+        composable(Screen.SearchStrata.route) {
+            SearchStrataScreen(
+                onNavigateBack = { navController.navigateUp() },
+                onPlanSelected = { spNumber ->
+                    navController.navigate(Screen.StrataPlanDetail(spNumber).route)
+                },
+            )
+        }
+        composable(Screen.StrataPlanDetail.ROUTE) { backStack ->
+            val spNumber = backStack.arguments?.getString("spNumber") ?: return@composable
+            StrataPlanDetailScreen(
+                spNumber = spNumber,
+                onNavigateBack = { navController.navigateUp() },
             )
         }
     }

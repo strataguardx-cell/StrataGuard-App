@@ -1,6 +1,7 @@
 package com.strataguard.app.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,6 +57,7 @@ private val features = listOf(
 @Composable
 fun HomeScreen(
     onSignOut: () -> Unit,
+    onSearchStrata: () -> Unit = {},
     authRepository: AuthRepository = koinInject(),
 ) {
     val scope = rememberCoroutineScope()
@@ -160,7 +162,13 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 items(features) { feature ->
-                    FeatureCard(feature)
+                    FeatureCard(
+                        feature = feature,
+                        onClick = when {
+                            feature.title == "Search a Strata Plan" -> onSearchStrata
+                            else -> null
+                        },
+                    )
                 }
             }
         }
@@ -168,9 +176,11 @@ fun HomeScreen(
 }
 
 @Composable
-private fun FeatureCard(feature: Feature) {
+private fun FeatureCard(feature: Feature, onClick: (() -> Unit)? = null) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
