@@ -51,6 +51,9 @@ kotlin {
                 // Serialization
                 implementation(libs.kotlinx.serialization.json)
 
+                // DateTime
+                implementation(libs.kotlinx.datetime)
+
                 // ViewModel
                 implementation(libs.lifecycle.viewmodel)
                 implementation(libs.lifecycle.viewmodel.compose)
@@ -74,6 +77,7 @@ kotlin {
             androidMain.dependencies {
                 implementation(libs.koin.android)
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.androidx.exifinterface)
             }
 
             iosMain.dependencies {

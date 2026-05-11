@@ -5,6 +5,8 @@ koin = "4.0.0"
 ktor = "3.1.0"
 kotlinx-coroutines = "1.10.1"
 kotlinx-serialization = "1.7.3"
+kotlinx-datetime = "0.6.0"
+exifinterface = "1.3.7"
 androidx-lifecycle = "2.8.4"
 navigation-compose = "2.8.0-alpha10"
 gitlive-firebase = "2.1.0"
@@ -37,6 +39,12 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 
 # Serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+# DateTime
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
+# EXIF (Android only)
+androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version.ref = "exifinterface" }
 
 # Lifecycle + ViewModel
 lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }

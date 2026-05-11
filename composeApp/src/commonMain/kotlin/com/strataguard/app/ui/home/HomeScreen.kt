@@ -58,6 +58,7 @@ private val features = listOf(
 fun HomeScreen(
     onSignOut: () -> Unit,
     onSearchStrata: () -> Unit = {},
+    onDocumentEvidence: () -> Unit = {},
     authRepository: AuthRepository = koinInject(),
 ) {
     val scope = rememberCoroutineScope()
@@ -166,6 +167,7 @@ fun HomeScreen(
                         feature = feature,
                         onClick = when {
                             feature.title == "Search a Strata Plan" -> onSearchStrata
+                            feature.title == "Document Evidence" -> onDocumentEvidence
                             else -> null
                         },
                     )

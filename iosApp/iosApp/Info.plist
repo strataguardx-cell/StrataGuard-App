@@ -4,5 +4,9 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>StrataGuard uses your camera to capture timestamped evidence photos for dispute preparation.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>StrataGuard accesses your photo library so you can upload existing evidence photos.</string>
 </dict>
 </plist>
