@@ -25,6 +25,9 @@ class SecurityConfig(private val firebaseTokenFilter: FirebaseTokenFilter) {
                     .requestMatchers("/api/v1/strata/**").permitAll()
                     // Actuator health check
                     .requestMatchers("/actuator/health").permitAll()
+                    // Evidence and incidents require authentication
+                    .requestMatchers("/api/v1/evidence/**").authenticated()
+                    .requestMatchers("/api/v1/incidents/**").authenticated()
                     // Everything else requires authentication
                     .anyRequest().authenticated()
             }

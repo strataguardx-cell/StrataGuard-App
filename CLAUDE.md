@@ -16,11 +16,10 @@ StrataGuard is a mobile app for the Australian market that empowers renters and 
 - ✅ Phase 4 app-side — Document Evidence feature: camera + gallery picker, on-device EXIF AI detection, Firestore thumbnail storage, verdict badges, evidence timeline (tested on Android)
 
 **IN PROGRESS:**
-- 🔨 Phase 4 server-side — Evidence API (S3 integration + async AI detection pipeline)
 - 🔨 Phase 5 — Disputes + PDF Export
 
 **NOT STARTED:**
-- Phase 5 — Disputes + PDF Export
+- Phase 5 server-side — Disputes + PDF Export
 
 **Implementation notes:**
 - App uses Firestore directly for strata search and evidence (MVP shortcut). Server module will be the authoritative backend once deployed.
@@ -641,10 +640,10 @@ Follow this sequence when setting up the project:
 15. ✅ Build strata search screen + building detail screen in `composeApp/`
 
 ### Phase 4 — Evidence + Incidents 🔨 IN PROGRESS
-16. ⬜ Implement S3 integration in server for photo uploads (Evidence API endpoint)
+16. ✅ Implement S3 integration in server for photo uploads (EvidenceController, EvidenceService, AwsConfig)
 17. ✅ Implement on-device AI detection (EXIF/metadata analysis) in composeApp before upload
 18. ✅ Create evidence capture flow in app (camera + gallery, EXIF detection, Firestore thumbnails, timeline)
-19. ⬜ Build incident tracking with evidence linking
+19. ✅ Build incident tracking with evidence linking (IncidentController, IncidentService, incident_evidence join table)
 
 ### Phase 5 — Disputes + PDF Export
 19. Implement rule-based dispute risk scoring in server
