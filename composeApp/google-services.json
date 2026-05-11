@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "702688291049",
+    "project_id": "strataguard-6775e",
+    "storage_bucket": "strataguard-6775e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:702688291049:android:34fdc01e017fdf99ee6878",
+        "android_client_info": {
+          "package_name": "com.strataguard.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgeul2eXApZ7cvu6mspl9wLsFahAIBcCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
