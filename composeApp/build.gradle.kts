@@ -64,6 +64,9 @@ kotlin {
                 // Image loading
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network)
+
+                // Compose preview
+                implementation(compose.components.uiToolingPreview)
             }
 
             androidMain.dependencies {
@@ -75,6 +78,8 @@ kotlin {
                 implementation(libs.ktor.client.darwin)
             }
         }
+
+
 }
 
 android {
