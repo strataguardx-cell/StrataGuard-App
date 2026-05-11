@@ -11,14 +11,21 @@ StrataGuard is a mobile app for the Australian market that empowers renters and 
 - ✅ Phase 2 — Auth flow (Firebase Auth with Google Sign-In working on both Android and iOS)
 - ✅ Home screen with 4 feature cards: Search a Strata Plan, Document Evidence, Dispute Risk Check (Coming Soon), Know Your Rights (Coming Soon)
 - ✅ CMP running successfully on both Android and iOS from single codebase
+- ✅ Phase 3 app-side — Strata Plan Search screen + Building Detail screen (Firestore-backed, seed data, tested on Android)
+- ✅ Phase 3 server-side — Spring Boot server module scaffolded: Flyway migrations (V1–V4), StrataPlanController + StrataPlanService, Firebase token filter, SecurityConfig, entities + JPA repositories, seed SQL data for NSW/VIC
+- ✅ Phase 4 app-side — Document Evidence feature: camera + gallery picker, on-device EXIF AI detection, Firestore thumbnail storage, verdict badges, evidence timeline (tested on Android)
 
 **IN PROGRESS:**
-- 🔨 Phase 3 — Strata Plan Search (current focus)
+- 🔨 Phase 4 server-side — Evidence API (S3 integration + async AI detection pipeline)
+- 🔨 Phase 5 — Disputes + PDF Export
 
 **NOT STARTED:**
-- Phase 4 — Evidence + Incidents
 - Phase 5 — Disputes + PDF Export
-- Backend (Spring Boot server, PostgreSQL, Redis)
+
+**Implementation notes:**
+- App uses Firestore directly for strata search and evidence (MVP shortcut). Server module will be the authoritative backend once deployed.
+- Evidence uses Firestore base64 thumbnails instead of Firebase Storage (avoids Storage quota/auth complexity for MVP).
+- Server module requires PostgreSQL running locally (`docker compose up -d postgres` from `infra/`). Run with `./gradlew :server:bootRun --args='--spring.profiles.active=local'`.
 
 ### App Design Language
 
@@ -627,17 +634,17 @@ Follow this sequence when setting up the project:
 10. Home screen with greeting, beta badge, and 4 feature cards implemented
 11. Firebase token verification in `server/` — still needed when backend work begins
 
-### Phase 3 — Strata search (core feature) 🔨 IN PROGRESS
-12. Create Flyway migration for `strata_plans` + `building_defects` tables
-13. Implement `StrataPlanController` + `StrataPlanService` in server
-14. Seed sample strata data for NSW/VIC (see Strata Data Strategy below)
-15. Build strata search screen + building detail screen in `composeApp/`
+### Phase 3 — Strata search (core feature) ✅ COMPLETE
+12. ✅ Create Flyway migration for `strata_plans` + `building_defects` tables (V2, V3, V4)
+13. ✅ Implement `StrataPlanController` + `StrataPlanService` in server
+14. ✅ Seed sample strata data for NSW/VIC (V4 SQL migration + Firestore seed via `seedIfEmpty()`)
+15. ✅ Build strata search screen + building detail screen in `composeApp/`
 
-### Phase 4 — Evidence + Incidents
-16. Implement S3 integration in server for photo uploads
-17. Implement on-device AI detection (EXIF/metadata analysis) in composeApp before upload
-18. Create evidence capture flow in app (in-app camera preferred → upload from gallery with AI check → timeline)
-19. Build incident tracking with evidence linking
+### Phase 4 — Evidence + Incidents 🔨 IN PROGRESS
+16. ⬜ Implement S3 integration in server for photo uploads (Evidence API endpoint)
+17. ✅ Implement on-device AI detection (EXIF/metadata analysis) in composeApp before upload
+18. ✅ Create evidence capture flow in app (camera + gallery, EXIF detection, Firestore thumbnails, timeline)
+19. ⬜ Build incident tracking with evidence linking
 
 ### Phase 5 — Disputes + PDF Export
 19. Implement rule-based dispute risk scoring in server
