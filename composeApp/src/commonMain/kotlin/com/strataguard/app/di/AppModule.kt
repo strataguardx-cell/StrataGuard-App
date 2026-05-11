@@ -2,12 +2,15 @@ package com.strataguard.app.di
 
 import com.strataguard.app.data.auth.AuthRepository
 import com.strataguard.app.data.auth.FirebaseAuthRepository
+import com.strataguard.app.data.dispute.DisputeRepository
+import com.strataguard.app.data.dispute.FirestoreDisputeRepository
 import com.strataguard.app.data.evidence.EvidenceRepository
 import com.strataguard.app.data.evidence.FirebaseEvidenceRepository
 import com.strataguard.app.data.strata.FirestoreStrataRepository
 import com.strataguard.app.data.strata.StrataRepository
 import com.strataguard.app.ui.auth.LoginViewModel
 import com.strataguard.app.ui.auth.RegisterViewModel
+import com.strataguard.app.ui.dispute.DisputeViewModel
 import com.strataguard.app.ui.evidence.EvidenceViewModel
 import com.strataguard.app.ui.strata.SearchStrataViewModel
 import com.strataguard.app.ui.strata.StrataPlanDetailViewModel
@@ -18,10 +21,12 @@ val appModule = module {
     single<AuthRepository> { FirebaseAuthRepository() }
     single<StrataRepository> { FirestoreStrataRepository() }
     single<EvidenceRepository> { FirebaseEvidenceRepository() }
+    single<DisputeRepository> { FirestoreDisputeRepository() }
 
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { SearchStrataViewModel(get()) }
     viewModel { params -> StrataPlanDetailViewModel(get(), params.get()) }
     viewModel { EvidenceViewModel(get()) }
+    viewModel { DisputeViewModel(get()) }
 }

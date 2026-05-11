@@ -50,7 +50,7 @@ private data class Feature(
 private val features = listOf(
     Feature("🏢", "Search a Strata Plan", "Check building health, defects & sinking fund status"),
     Feature("📸", "Document Evidence", "Timestamped photo & video records you control"),
-    Feature("⚖️", "Dispute Risk Check", "AI cross-references strata defects against your bond claim", comingSoon = true),
+    Feature("⚖️", "Dispute Risk Check", "AI cross-references strata defects against your bond claim"),
     Feature("📋", "Know Your Rights", "NSW & VIC state-specific tenant guidance", comingSoon = true),
 )
 
@@ -59,6 +59,7 @@ fun HomeScreen(
     onSignOut: () -> Unit,
     onSearchStrata: () -> Unit = {},
     onDocumentEvidence: () -> Unit = {},
+    onDisputeRiskCheck: () -> Unit = {},
     authRepository: AuthRepository = koinInject(),
 ) {
     val scope = rememberCoroutineScope()
@@ -168,6 +169,7 @@ fun HomeScreen(
                         onClick = when {
                             feature.title == "Search a Strata Plan" -> onSearchStrata
                             feature.title == "Document Evidence" -> onDocumentEvidence
+                            feature.title == "Dispute Risk Check" -> onDisputeRiskCheck
                             else -> null
                         },
                     )

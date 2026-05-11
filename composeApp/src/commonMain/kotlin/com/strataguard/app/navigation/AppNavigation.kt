@@ -9,6 +9,7 @@ import com.strataguard.app.ui.auth.ForgotPasswordScreen
 import com.strataguard.app.ui.auth.LoginScreen
 import com.strataguard.app.ui.auth.RegisterScreen
 import com.strataguard.app.ui.home.HomeScreen
+import com.strataguard.app.ui.dispute.DisputeListScreen
 import com.strataguard.app.ui.evidence.EvidenceListScreen
 import com.strataguard.app.ui.strata.SearchStrataScreen
 import com.strataguard.app.ui.strata.StrataPlanDetailScreen
@@ -20,6 +21,7 @@ sealed class Screen(val route: String) {
     object Home : Screen("home")
     object SearchStrata : Screen("search_strata")
     object DocumentEvidence : Screen("document_evidence")
+    object DisputeRiskCheck : Screen("dispute_risk_check")
     data class StrataPlanDetail(val spNumber: String) : Screen("strata_plan/$spNumber") {
         companion object { const val ROUTE = "strata_plan/{spNumber}" }
     }
@@ -69,7 +71,11 @@ fun AppNavigation(
                 },
                 onSearchStrata = { navController.navigate(Screen.SearchStrata.route) },
                 onDocumentEvidence = { navController.navigate(Screen.DocumentEvidence.route) },
+                onDisputeRiskCheck = { navController.navigate(Screen.DisputeRiskCheck.route) },
             )
+        }
+        composable(Screen.DisputeRiskCheck.route) {
+            DisputeListScreen(onNavigateBack = { navController.navigateUp() })
         }
         composable(Screen.DocumentEvidence.route) {
             EvidenceListScreen(

@@ -33,5 +33,8 @@ dependencies {
     // AWS S3 (evidence storage)
     implementation(libs.aws.s3.sdk)
 
+    // PDF generation
+    implementation(libs.pdfbox)
+
     testImplementation(libs.spring.boot.starter.test)
 }
