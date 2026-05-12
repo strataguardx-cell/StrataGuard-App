@@ -9,17 +9,16 @@ StrataGuard is a mobile app for the Australian market that empowers renters and 
 **COMPLETED:**
 - ✅ Phase 1 — Project skeleton (monorepo, Gradle, version catalog, all modules scaffolded)
 - ✅ Phase 2 — Auth flow (Firebase Auth with Google Sign-In working on both Android and iOS)
-- ✅ Home screen with 4 feature cards: Search a Strata Plan, Document Evidence, Dispute Risk Check (Coming Soon), Know Your Rights (Coming Soon)
+- ✅ Home screen with 4 feature cards: all live (no "Coming Soon" badges)
 - ✅ CMP running successfully on both Android and iOS from single codebase
 - ✅ Phase 3 app-side — Strata Plan Search screen + Building Detail screen (Firestore-backed, seed data, tested on Android)
 - ✅ Phase 3 server-side — Spring Boot server module scaffolded: Flyway migrations (V1–V4), StrataPlanController + StrataPlanService, Firebase token filter, SecurityConfig, entities + JPA repositories, seed SQL data for NSW/VIC
 - ✅ Phase 4 app-side — Document Evidence feature: camera + gallery picker, on-device EXIF AI detection, Firestore thumbnail storage, verdict badges, evidence timeline (tested on Android)
-
-**IN PROGRESS:**
-- 🔨 Phase 5 — Disputes + PDF Export
+- ✅ Phase 5 app-side — Dispute Risk Check: Firestore-backed dispute CRUD, rule-based risk scoring, DisputeListScreen + DisputeViewModel, DI-wired and tested on Android
+- ✅ Know Your Rights screen — static content screen, NSW/VIC toggle, 5 expandable sections per state (rights, tribunal scope, filing steps, deadlines, resources), tested on Android
 
 **NOT STARTED:**
-- Phase 5 server-side — Disputes + PDF Export
+- Phase 5 server-side — Disputes + PDF Export (server-side rule-based scoring, PDFBox tribunal evidence pack generation)
 
 **Implementation notes:**
 - App uses Firestore directly for strata search and evidence (MVP shortcut). Server module will be the authoritative backend once deployed.
