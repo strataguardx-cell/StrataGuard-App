@@ -67,8 +67,10 @@ fun DisputeListScreen(onNavigateBack: () -> Unit) {
                         DisputeCard(
                             dispute = dispute,
                             onAssess = { vm.runAssessment(dispute.id) },
+                            onExport = { vm.exportPdf(dispute) },
                             onDelete = { vm.deleteDispute(dispute.id) },
                             isAssessing = state.isAssessing,
+                            isExporting = state.exportingDisputeId == dispute.id,
                         )
                     }
                 }
@@ -127,8 +129,10 @@ private fun DisputeEmptyState(onNew: () -> Unit) {
 private fun DisputeCard(
     dispute: Dispute,
     onAssess: () -> Unit,
+    onExport: () -> Unit,
     onDelete: () -> Unit,
     isAssessing: Boolean,
+    isExporting: Boolean,
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -160,10 +164,12 @@ private fun DisputeCard(
             }
 
             Spacer(Modifier.height(12.dp))
+
+            // Primary action row: Assess + Export
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedButton(
                     onClick = onAssess,
-                    enabled = !isAssessing,
+                    enabled = !isAssessing && !isExporting,
                     modifier = Modifier.weight(1f),
                 ) {
                     if (isAssessing) {
@@ -172,11 +178,27 @@ private fun DisputeCard(
                         Text("Assess Risk", fontSize = 13.sp)
                     }
                 }
-                OutlinedButton(
-                    onClick = onDelete,
+                // Export enabled only after a risk assessment has been run
+                Button(
+                    onClick = onExport,
+                    enabled = dispute.riskVerdict.isNotBlank() && !isExporting && !isAssessing,
                     modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFCC4400)),
-                ) { Text("Delete", fontSize = 13.sp) }
+                    colors = ButtonDefaults.buttonColors(containerColor = Amber),
+                ) {
+                    if (isExporting) {
+                        CircularProgressIndicator(Modifier.size(14.dp), color = Color.White, strokeWidth = 2.dp)
+                    } else {
+                        Text("Export PDF", fontSize = 13.sp, color = Color.White)
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(4.dp))
+            TextButton(
+                onClick = onDelete,
+                modifier = Modifier.align(Alignment.End),
+            ) {
+                Text("Delete", fontSize = 12.sp, color = Color(0xFFCC4400))
             }
         }
     }

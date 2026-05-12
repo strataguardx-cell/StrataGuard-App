@@ -64,3 +64,31 @@ data class ExportPdfResponse(
     val pdfUrl: String,
     val expiresAt: Long,
 )
+
+data class GeneratePdfRequest(
+    val disputeType: String,
+    val state: String,
+    val tribunal: String,
+    val status: String = "draft",
+    val strataAddress: String? = null,
+    val filingDeadline: String? = null,
+    val riskScore: Double? = null,
+    val riskVerdict: String? = null,
+    val riskFactors: Map<String, String>? = null,
+    val incidents: List<IncidentPayload> = emptyList(),
+    val evidenceItems: List<EvidencePayload> = emptyList(),
+)
+
+data class IncidentPayload(
+    val title: String,
+    val description: String? = null,
+    val incidentDate: String,
+    val evidenceCount: Int = 0,
+)
+
+data class EvidencePayload(
+    val title: String? = null,
+    val description: String? = null,
+    val capturedAt: Long,
+    val aiDetectionVerdict: String? = null,
+)

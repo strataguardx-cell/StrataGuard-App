@@ -6,6 +6,9 @@ import com.strataguard.app.data.dispute.Dispute
 import com.strataguard.app.data.dispute.DisputeRepository
 import com.strataguard.app.data.dispute.DisputeType
 import com.strataguard.app.data.dispute.RiskAssessment
+import com.strataguard.app.data.remote.PdfExportRequest
+import com.strataguard.app.data.remote.StrataGuardApiClient
+import com.strataguard.app.platform.savePdfAndShare
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,9 +27,14 @@ data class DisputeUiState(
     // Assessment
     val assessment: RiskAssessment? = null,
     val isAssessing: Boolean = false,
+    // PDF export
+    val exportingDisputeId: String? = null,
 )
 
-class DisputeViewModel(private val repository: DisputeRepository) : ViewModel() {
+class DisputeViewModel(
+    private val repository: DisputeRepository,
+    private val apiClient: StrataGuardApiClient,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DisputeUiState())
     val uiState: StateFlow<DisputeUiState> = _uiState
@@ -96,6 +104,34 @@ class DisputeViewModel(private val repository: DisputeRepository) : ViewModel() 
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(isAssessing = false, error = e.message)
             }
+        }
+    }
+
+    fun exportPdf(dispute: Dispute) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(exportingDisputeId = dispute.id, error = null)
+            val request = PdfExportRequest(
+                disputeType = dispute.disputeType,
+                state = dispute.state,
+                tribunal = dispute.tribunal,
+                status = dispute.status,
+                strataAddress = dispute.strataAddress.ifBlank { null },
+                filingDeadline = dispute.filingDeadline.ifBlank { null },
+                riskScore = if (dispute.riskScore > 0f) dispute.riskScore.toDouble() else null,
+                riskVerdict = dispute.riskVerdict.ifBlank { null },
+                riskFactors = dispute.riskFactors.ifEmpty { null },
+            )
+            apiClient.generatePdf(request)
+                .onSuccess { bytes ->
+                    _uiState.value = _uiState.value.copy(exportingDisputeId = null)
+                    savePdfAndShare(bytes, "evidence-pack-${dispute.id.take(8)}.pdf")
+                }
+                .onFailure { e ->
+                    _uiState.value = _uiState.value.copy(
+                        exportingDisputeId = null,
+                        error = "Could not generate PDF. Make sure the StrataGuard server is running.",
+                    )
+                }
         }
     }
 

@@ -25,6 +25,8 @@ class SecurityConfig(private val firebaseTokenFilter: FirebaseTokenFilter) {
                     .requestMatchers("/api/v1/strata/**").permitAll()
                     // Actuator health check
                     .requestMatchers("/actuator/health").permitAll()
+                    // Stateless PDF generation — no DB lookup, no personal data returned
+                    .requestMatchers("/api/v1/disputes/generate-pdf").permitAll()
                     // Evidence, incidents and disputes require authentication
                     .requestMatchers("/api/v1/evidence/**").authenticated()
                     .requestMatchers("/api/v1/incidents/**").authenticated()
