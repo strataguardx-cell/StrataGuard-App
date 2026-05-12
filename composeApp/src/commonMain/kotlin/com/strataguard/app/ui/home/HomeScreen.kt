@@ -51,7 +51,7 @@ private val features = listOf(
     Feature("🏢", "Search a Strata Plan", "Check building health, defects & sinking fund status"),
     Feature("📸", "Document Evidence", "Timestamped photo & video records you control"),
     Feature("⚖️", "Dispute Risk Check", "AI cross-references strata defects against your bond claim"),
-    Feature("📋", "Know Your Rights", "NSW & VIC state-specific tenant guidance", comingSoon = true),
+    Feature("📋", "Know Your Rights", "NSW & VIC state-specific tenant guidance"),
 )
 
 @Composable
@@ -60,6 +60,7 @@ fun HomeScreen(
     onSearchStrata: () -> Unit = {},
     onDocumentEvidence: () -> Unit = {},
     onDisputeRiskCheck: () -> Unit = {},
+    onKnowYourRights: () -> Unit = {},
     authRepository: AuthRepository = koinInject(),
 ) {
     val scope = rememberCoroutineScope()
@@ -170,6 +171,7 @@ fun HomeScreen(
                             feature.title == "Search a Strata Plan" -> onSearchStrata
                             feature.title == "Document Evidence" -> onDocumentEvidence
                             feature.title == "Dispute Risk Check" -> onDisputeRiskCheck
+                            feature.title == "Know Your Rights" -> onKnowYourRights
                             else -> null
                         },
                     )
