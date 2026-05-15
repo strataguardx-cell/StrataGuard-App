@@ -15,6 +15,7 @@ val Amber500 = Color(0xFFF59E0B)
 val Amber400 = Color(0xFFFBBF24)
 val Amber100 = Color(0xFFFDE68A)
 val Amber50  = Color(0xFFFFFBEB)
+val AmberDark = Color(0xFF7A4A00)  // dark amber text on amber/Amber100 backgrounds
 
 // Neutrals
 val Grey900 = Color(0xFF111827)

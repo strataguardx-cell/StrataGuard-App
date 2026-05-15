@@ -8,6 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -34,6 +39,7 @@ import com.strataguard.app.ui.components.StrataTextField
 import com.strataguard.app.ui.theme.Grey500
 import com.strataguard.app.ui.theme.Navy800
 import com.strataguard.app.ui.theme.SuccessGreen
+import com.strataguard.app.ui.theme.SuccessLight
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -58,7 +64,7 @@ fun ForgotPasswordScreen(
             Spacer(Modifier.height(16.dp))
 
             IconButton(onClick = onNavigateBack, enabled = !isLoading) {
-                Text("←", style = MaterialTheme.typography.titleLarge, color = Navy800)
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Navy800)
             }
 
             Spacer(Modifier.height(32.dp))
@@ -92,11 +98,9 @@ fun ForgotPasswordScreen(
             Spacer(Modifier.height(32.dp))
 
             if (successMessage.isNotEmpty()) {
-                androidx.compose.material3.Card(
+                Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = androidx.compose.material3.CardDefaults.cardColors(
-                        containerColor = com.strataguard.app.ui.theme.SuccessLight,
-                    ),
+                    colors = CardDefaults.cardColors(containerColor = SuccessLight),
                     shape = MaterialTheme.shapes.small,
                 ) {
                     Text(

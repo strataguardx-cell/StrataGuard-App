@@ -20,8 +20,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -92,7 +95,7 @@ fun StrataPlanDetailScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Text("←", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Navy900),
@@ -188,7 +191,7 @@ private fun PlanDetailContent(
             )
         }
 
-        Divider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
 
         // Managing agent
         Section(title = "Managing Agent") {
@@ -229,7 +232,7 @@ private fun PlanDetailContent(
             }
         }
 
-        Divider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
 
         // Work orders
         Section(
@@ -256,7 +259,7 @@ private fun PlanDetailContent(
             }
         }
 
-        Divider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
 
         // Sinking fund
         Section(title = "Sinking Fund (Capital Works)") {
@@ -271,7 +274,7 @@ private fun PlanDetailContent(
             }
         }
 
-        Divider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
 
         // Strata documents + OCR risk flags
         Section(title = "Strata Documents") {
@@ -305,7 +308,7 @@ private fun PlanDetailContent(
             }
         }
 
-        Divider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
 
         // Data attribution
         Column(
@@ -460,7 +463,7 @@ private fun StrataDocumentCard(doc: StrataDocument) {
                     Text(
                         "${doc.riskFlags.size} risk flag${if (doc.riskFlags.size != 1) "s" else ""} detected",
                         style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                        color = Color(0xFFDC3545),
+                        color = ErrorRed,
                     )
                     TextButton(onClick = { expanded = !expanded }) {
                         Text(if (expanded) "Hide" else "Show", fontSize = 12.sp)

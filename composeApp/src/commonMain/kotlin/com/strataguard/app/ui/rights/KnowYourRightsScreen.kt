@@ -10,6 +10,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,10 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-private val NavyBlue = Color(0xFF1B2A4A)
-private val Amber    = Color(0xFFE8A020)
-private val NavyLight = Color(0xFFEDF0FA)
+import com.strataguard.app.ui.theme.Amber500
+import com.strataguard.app.ui.theme.Grey200
+import com.strataguard.app.ui.theme.Grey700
+import com.strataguard.app.ui.theme.Navy50
+import com.strataguard.app.ui.theme.Navy800
+import com.strataguard.app.ui.theme.Navy900
 
 // ── Data model ──────────────────────────────────────────────────────────────
 
@@ -202,11 +208,11 @@ fun KnowYourRightsScreen(onNavigateBack: () -> Unit) {
             TopAppBar(
                 title = { Text("Know Your Rights", color = Color.White, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    TextButton(onClick = onNavigateBack) {
-                        Text("←", color = Color.White, fontSize = 20.sp)
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = NavyBlue),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Navy900),
             )
         },
     ) { padding ->
@@ -233,7 +239,7 @@ private fun StateHeader(
     Column(
         Modifier
             .fillMaxWidth()
-            .background(NavyBlue)
+            .background(Navy900)
             .padding(horizontal = 20.dp)
             .padding(top = 4.dp, bottom = 20.dp),
     ) {
@@ -243,7 +249,7 @@ private fun StateHeader(
                 val selected = selectedState == s
                 Surface(
                     shape = RoundedCornerShape(20.dp),
-                    color = if (selected) Amber else Color.White.copy(alpha = 0.15f),
+                    color = if (selected) Amber500 else Color.White.copy(alpha = 0.15f),
                     modifier = Modifier.clickable { onStateSelected(s) },
                 ) {
                     Text(
@@ -295,10 +301,11 @@ private fun RightsSectionCard(section: RightsSection) {
                     fontSize = 15.sp,
                     modifier = Modifier.weight(1f),
                 )
-                Text(
-                    if (expanded) "▲" else "▼",
-                    color = Color.Gray,
-                    fontSize = 11.sp,
+                Icon(
+                    if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = if (expanded) "Collapse" else "Expand",
+                    tint = Color.Gray,
+                    modifier = Modifier.size(20.dp),
                 )
             }
 
@@ -308,7 +315,7 @@ private fun RightsSectionCard(section: RightsSection) {
                 exit = shrinkVertically(),
             ) {
                 Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
-                    HorizontalDivider(color = Color(0xFFEEEEEE))
+                    HorizontalDivider(color = Grey200)
                     Spacer(Modifier.height(12.dp))
 
                     when (section.style) {
@@ -334,10 +341,10 @@ private fun BulletItem(text: String) {
                 .padding(top = 7.dp)
                 .size(6.dp)
                 .clip(CircleShape)
-                .background(Amber),
+                .background(Amber500),
         )
         Spacer(Modifier.width(10.dp))
-        Text(text, fontSize = 13.sp, color = Color(0xFF374151), lineHeight = 19.sp)
+        Text(text, fontSize = 13.sp, color = Grey700, lineHeight = 19.sp)
     }
 }
 
@@ -351,13 +358,13 @@ private fun NumberedItem(number: Int, text: String) {
             modifier = Modifier
                 .size(22.dp)
                 .clip(CircleShape)
-                .background(NavyBlue),
+                .background(Navy800),
             contentAlignment = Alignment.Center,
         ) {
             Text("$number", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
         }
         Spacer(Modifier.width(10.dp))
-        Text(text, fontSize = 13.sp, color = Color(0xFF374151), lineHeight = 19.sp, modifier = Modifier.padding(top = 2.dp))
+        Text(text, fontSize = 13.sp, color = Grey700, lineHeight = 19.sp, modifier = Modifier.padding(top = 2.dp))
     }
 }
 
@@ -367,10 +374,10 @@ private fun DeadlineItem(raw: String) {
     if (parts.size < 2) return
     Column(Modifier.padding(bottom = 10.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Surface(color = NavyLight, shape = RoundedCornerShape(4.dp)) {
+            Surface(color = Navy50, shape = RoundedCornerShape(4.dp)) {
                 Text(
                     parts[0],
-                    color = NavyBlue,
+                    color = Navy800,
                     fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
@@ -378,7 +385,7 @@ private fun DeadlineItem(raw: String) {
             }
         }
         Spacer(Modifier.height(3.dp))
-        Text(parts[1], fontSize = 13.sp, color = Color(0xFF374151), lineHeight = 18.sp)
+        Text(parts[1], fontSize = 13.sp, color = Grey700, lineHeight = 18.sp)
     }
 }
 
@@ -390,10 +397,10 @@ private fun LinkItem(raw: String) {
         modifier = Modifier.padding(bottom = 10.dp),
         verticalAlignment = Alignment.Top,
     ) {
-        Surface(color = Amber.copy(alpha = 0.15f), shape = RoundedCornerShape(4.dp)) {
+        Surface(color = Amber500.copy(alpha = 0.15f), shape = RoundedCornerShape(4.dp)) {
             Text(
                 "↗",
-                color = Amber,
+                color = Amber500,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
@@ -401,7 +408,7 @@ private fun LinkItem(raw: String) {
         }
         Spacer(Modifier.width(8.dp))
         Column {
-            Text(parts[0], fontSize = 13.sp, fontWeight = FontWeight.Medium, color = NavyBlue)
+            Text(parts[0], fontSize = 13.sp, fontWeight = FontWeight.Medium, color = Navy800)
             Text(parts[1], fontSize = 11.sp, color = Color.Gray)
         }
     }

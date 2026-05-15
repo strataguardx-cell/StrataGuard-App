@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -62,7 +64,7 @@ fun RegisterScreen(
             Spacer(Modifier.height(16.dp))
 
             IconButton(onClick = onNavigateBack, enabled = !state.isLoading) {
-                Text("←", style = MaterialTheme.typography.titleLarge, color = Navy800)
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Navy800)
             }
 
             Spacer(Modifier.height(16.dp))

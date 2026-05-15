@@ -21,8 +21,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -109,7 +112,7 @@ fun SearchStrataScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Text("←", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Navy900),
@@ -224,7 +227,7 @@ fun SearchStrataScreen(
                 },
             )
 
-            Divider(color = Navy100)
+            HorizontalDivider(color = Navy100)
 
             Box(Modifier.weight(1f)) {
                 when {
@@ -288,7 +291,7 @@ private fun ResultsList(
                 onClick = { onPlanSelected(plan.spNumber) },
                 distanceKm = distances[plan.spNumber],
             )
-            Divider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), color = Navy100)
         }
         item { Spacer(Modifier.height(16.dp)) }
     }

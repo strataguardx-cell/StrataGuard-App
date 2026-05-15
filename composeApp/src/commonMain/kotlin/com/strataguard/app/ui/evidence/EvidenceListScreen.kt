@@ -19,8 +19,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -60,6 +64,7 @@ import com.strataguard.app.platform.rememberImagePickerHandler
 import com.strataguard.app.ui.components.ErrorBanner
 import com.strataguard.app.ui.theme.Amber100
 import com.strataguard.app.ui.theme.Amber500
+import com.strataguard.app.ui.theme.AmberDark
 import com.strataguard.app.ui.theme.ErrorLight
 import com.strataguard.app.ui.theme.ErrorRed
 import com.strataguard.app.ui.theme.Grey300
@@ -108,7 +113,7 @@ fun EvidenceListScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Text("←", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Navy900),
@@ -121,7 +126,7 @@ fun EvidenceListScreen(
                     containerColor = Navy800,
                     contentColor = Color.White,
                 ) {
-                    Text("+", style = MaterialTheme.typography.headlineSmall)
+                    Icon(Icons.Default.Add, contentDescription = "Add evidence")
                 }
             }
         },
@@ -301,7 +306,7 @@ private fun EvidenceTimeline(items: List<EvidenceItem>, onDelete: (String) -> Un
                     Text(
                         "$pendingCount item${if (pendingCount != 1) "s" else ""} waiting to upload — will sync when connected",
                         style = MaterialTheme.typography.labelMedium,
-                        color = Color(0xFF7A4A00),
+                        color = AmberDark,
                     )
                 }
             }
@@ -338,7 +343,7 @@ private fun EvidenceCard(item: EvidenceItem, onDelete: () -> Unit) {
             if (thumbnailBytes != null) {
                 AsyncImage(
                     model = thumbnailBytes,
-                    contentDescription = null,
+                    contentDescription = "Evidence thumbnail for ${item.title}",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                 )
@@ -369,7 +374,7 @@ private fun EvidenceCard(item: EvidenceItem, onDelete: () -> Unit) {
                             .background(Amber100, RoundedCornerShape(4.dp))
                             .padding(horizontal = 4.dp, vertical = 1.dp),
                     ) {
-                        Text("⏳ Pending", style = MaterialTheme.typography.labelSmall, color = Color(0xFF7A4A00))
+                        Text("⏳ Pending", style = MaterialTheme.typography.labelSmall, color = AmberDark)
                     }
                 }
             }
@@ -500,7 +505,7 @@ private fun ImagePreviewAndVerdict(bytes: ByteArray, analysis: ExifAnalysisResul
     ) {
         AsyncImage(
             model = bytes,
-            contentDescription = null,
+            contentDescription = "Evidence image preview",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
         )

@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,11 +20,12 @@ import com.strataguard.app.data.dispute.Dispute
 import com.strataguard.app.data.dispute.DisputeType
 import com.strataguard.app.data.dispute.AustralianState
 import com.strataguard.app.data.dispute.verdictLabel
+import com.strataguard.app.ui.theme.Amber500
+import com.strataguard.app.ui.theme.ErrorRed
+import com.strataguard.app.ui.theme.Navy800
+import com.strataguard.app.ui.theme.Navy900
+import com.strataguard.app.ui.theme.SuccessGreen
 import org.koin.compose.viewmodel.koinViewModel
-
-private val NavyBlue = Color(0xFF1B2A4A)
-private val Amber = Color(0xFFE8A020)
-private val Green = Color(0xFF2DA05A)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,19 +39,19 @@ fun DisputeListScreen(onNavigateBack: () -> Unit) {
             TopAppBar(
                 title = { Text("Dispute Risk Check", color = Color.White, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    TextButton(onClick = onNavigateBack) {
-                        Text("←", color = Color.White, fontSize = 20.sp)
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = NavyBlue),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Navy900),
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { vm.showCreateSheet() },
-                containerColor = Amber,
+                containerColor = Amber500,
                 contentColor = Color.White,
-            ) { Text("+", fontSize = 24.sp) }
+            ) { Icon(Icons.Default.Add, contentDescription = "New dispute") }
         },
     ) { padding ->
         Box(Modifier.fillMaxSize().padding(padding)) {
@@ -134,7 +138,7 @@ private fun DisputeEmptyState(onNew: () -> Unit) {
         Spacer(Modifier.height(24.dp))
         Button(
             onClick = onNew,
-            colors = ButtonDefaults.buttonColors(containerColor = Amber),
+            colors = ButtonDefaults.buttonColors(containerColor = Amber500),
         ) { Text("Start a Dispute Case", color = Color.White) }
     }
 }
@@ -174,7 +178,7 @@ private fun DisputeCard(
 
             if (dispute.filingDeadline.isNotBlank()) {
                 Spacer(Modifier.height(4.dp))
-                Text("Filing deadline: ${dispute.filingDeadline}", fontSize = 12.sp, color = Color(0xFFCC4400))
+                Text("Filing deadline: ${dispute.filingDeadline}", fontSize = 12.sp, color = ErrorRed)
             }
 
             Spacer(Modifier.height(12.dp))
@@ -197,7 +201,7 @@ private fun DisputeCard(
                     onClick = onExport,
                     enabled = dispute.riskVerdict.isNotBlank() && !isExporting && !isAssessing,
                     modifier = Modifier.weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = Amber),
+                    colors = ButtonDefaults.buttonColors(containerColor = Amber500),
                 ) {
                     if (isExporting) {
                         CircularProgressIndicator(Modifier.size(14.dp), color = Color.White, strokeWidth = 2.dp)
@@ -212,7 +216,7 @@ private fun DisputeCard(
                 onClick = onDelete,
                 modifier = Modifier.align(Alignment.End),
             ) {
-                Text("Delete", fontSize = 12.sp, color = Color(0xFFCC4400))
+                Text("Delete", fontSize = 12.sp, color = ErrorRed)
             }
         }
     }
@@ -221,9 +225,9 @@ private fun DisputeCard(
 @Composable
 private fun VerdictChip(verdict: String, score: Float) {
     val (bg, label) = when (verdict) {
-        "STRONG" -> Color(0xFF2DA05A) to "STRONG  ${(score * 100).toInt()}%"
-        "MODERATE" -> Amber to "MODERATE  ${(score * 100).toInt()}%"
-        else -> Color(0xFFDC3545) to "WEAK  ${(score * 100).toInt()}%"
+        "STRONG" -> SuccessGreen to "STRONG  ${(score * 100).toInt()}%"
+        "MODERATE" -> Amber500 to "MODERATE  ${(score * 100).toInt()}%"
+        else -> ErrorRed to "WEAK  ${(score * 100).toInt()}%"
     }
     Surface(color = bg, shape = RoundedCornerShape(16.dp)) {
         Text(label, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold,
@@ -261,25 +265,25 @@ private fun PaywallSheet(
                 Button(
                     onClick = onDismiss,
                     modifier = Modifier.fillMaxWidth().height(52.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Green),
+                    colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen),
                 ) { Text("Done", color = Color.White, fontWeight = FontWeight.Bold) }
             } else {
                 // Paywall state
                 Spacer(Modifier.height(8.dp))
                 Surface(
-                    color = Amber.copy(alpha = 0.12f),
+                    color = Amber500.copy(alpha = 0.12f),
                     shape = RoundedCornerShape(12.dp),
                 ) {
                     Text(
                         "EVIDENCE PACK",
-                        color = Amber, fontWeight = FontWeight.Bold, fontSize = 11.sp,
+                        color = Amber500, fontWeight = FontWeight.Bold, fontSize = 11.sp,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                     )
                 }
 
                 Text(
                     "$49",
-                    fontWeight = FontWeight.Bold, fontSize = 48.sp, color = NavyBlue,
+                    fontWeight = FontWeight.Bold, fontSize = 48.sp, color = Navy800,
                 )
                 Text("one-time · per dispute", color = Color.Gray, fontSize = 13.sp)
 
@@ -311,7 +315,7 @@ private fun PaywallSheet(
                     },
                     enabled = !isExporting,
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = NavyBlue),
+                    colors = ButtonDefaults.buttonColors(containerColor = Navy800),
                     shape = RoundedCornerShape(12.dp),
                 ) {
                     if (isExporting) {
@@ -404,7 +408,7 @@ private fun CreateDisputeSheet(
                 onClick = onSave,
                 enabled = !isSaving,
                 modifier = Modifier.fillMaxWidth().height(52.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = NavyBlue),
+                colors = ButtonDefaults.buttonColors(containerColor = Navy800),
             ) {
                 if (isSaving) CircularProgressIndicator(Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
                 else Text("Create Dispute Case", color = Color.White)
