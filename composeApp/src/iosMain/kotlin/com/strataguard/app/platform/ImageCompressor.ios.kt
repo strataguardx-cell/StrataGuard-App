@@ -14,5 +14,5 @@ actual fun ByteArray.toThumbnailBytes(maxDim: Int): ByteArray = runCatching {
     val bitmap = Bitmap()
     bitmap.allocN32Pixels(w, h)
     Canvas(bitmap).drawImageRect(image, Rect.makeWH(w.toFloat(), h.toFloat()))
-    bitmap.toImage().encodeToData(EncodedImageFormat.JPEG, 70)!!.bytes
+    Image.makeFromBitmap(bitmap).encodeToData(EncodedImageFormat.JPEG, 70)!!.bytes
 }.getOrElse { this }

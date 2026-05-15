@@ -2,16 +2,19 @@ package com.strataguard.server.exception
 
 import com.strataguard.server.controller.dto.ErrorResponse
 import jakarta.servlet.http.HttpServletRequest
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.server.ResponseStatusException
 
 class NotFoundException(message: String) : RuntimeException(message)
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+    private val log = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
 
     @ExceptionHandler(NotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -35,12 +38,24 @@ class GlobalExceptionHandler {
         )
     }
 
+    @ExceptionHandler(ResponseStatusException::class)
+    fun handleResponseStatus(ex: ResponseStatusException, request: HttpServletRequest) =
+        ErrorResponse(
+            status = ex.statusCode.value(),
+            error = ex.reason ?: ex.statusCode.toString(),
+            message = ex.reason ?: ex.message ?: "",
+            path = request.requestURI,
+        )
+
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    fun handleGeneric(ex: Exception, request: HttpServletRequest) = ErrorResponse(
-        status = 500,
-        error = "Internal Server Error",
-        message = "An unexpected error occurred",
-        path = request.requestURI,
-    )
+    fun handleGeneric(ex: Exception, request: HttpServletRequest): ErrorResponse {
+        log.error("Unhandled exception at ${request.requestURI}", ex)
+        return ErrorResponse(
+            status = 500,
+            error = "Internal Server Error",
+            message = "An unexpected error occurred",
+            path = request.requestURI,
+        )
+    }
 }

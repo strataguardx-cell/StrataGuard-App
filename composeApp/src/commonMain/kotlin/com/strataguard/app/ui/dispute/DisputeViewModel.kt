@@ -8,7 +8,9 @@ import com.strataguard.app.data.dispute.DisputeType
 import com.strataguard.app.data.dispute.RiskAssessment
 import com.strataguard.app.data.remote.PdfExportRequest
 import com.strataguard.app.data.remote.StrataGuardApiClient
+import com.strataguard.app.platform.cancelDeadlineReminders
 import com.strataguard.app.platform.savePdfAndShare
+import com.strataguard.app.platform.scheduleDeadlineReminders
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,7 +28,7 @@ data class DisputeUiState(
     val isSaving: Boolean = false,
     // Assessment
     val assessment: RiskAssessment? = null,
-    val isAssessing: Boolean = false,
+    val assessingDisputeId: String? = null,
     // PDF export
     val exportingDisputeId: String? = null,
 )
@@ -86,8 +88,16 @@ class DisputeViewModel(
                 strataId = strataId,
                 filingDeadline = state.filingDeadline.ifBlank { null },
                 notes = state.notes.ifBlank { null },
-            ).onSuccess {
+            ).onSuccess { dispute ->
                 _uiState.value = _uiState.value.copy(isSaving = false, showCreateSheet = false)
+                if (dispute.filingDeadline.isNotBlank()) {
+                    scheduleDeadlineReminders(
+                        disputeId = dispute.id,
+                        disputeType = dispute.disputeType,
+                        tribunal = dispute.tribunal,
+                        deadlineIso = dispute.filingDeadline,
+                    )
+                }
                 loadDisputes()
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(isSaving = false, error = e.message ?: "Failed to create dispute")
@@ -97,12 +107,25 @@ class DisputeViewModel(
 
     fun runAssessment(disputeId: String) {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isAssessing = true, error = null)
+            _uiState.value = _uiState.value.copy(assessingDisputeId = disputeId, error = null)
             repository.runAssessment(disputeId).onSuccess { result ->
-                _uiState.value = _uiState.value.copy(isAssessing = false, assessment = result)
-                loadDisputes()
+                val updatedDisputes = _uiState.value.disputes.map { d ->
+                    if (d.id == disputeId) d.copy(
+                        riskScore = result.score,
+                        riskVerdict = result.verdict,
+                        riskFactors = result.factors,
+                    ) else d
+                }
+                _uiState.value = _uiState.value.copy(
+                    assessingDisputeId = null,
+                    assessment = result,
+                    disputes = updatedDisputes,
+                )
             }.onFailure { e ->
-                _uiState.value = _uiState.value.copy(isAssessing = false, error = e.message)
+                _uiState.value = _uiState.value.copy(
+                    assessingDisputeId = null,
+                    error = e.message ?: "Risk assessment failed",
+                )
             }
         }
     }
@@ -137,6 +160,7 @@ class DisputeViewModel(
 
     fun deleteDispute(id: String) {
         viewModelScope.launch {
+            cancelDeadlineReminders(id)
             repository.deleteDispute(id)
             loadDisputes()
         }

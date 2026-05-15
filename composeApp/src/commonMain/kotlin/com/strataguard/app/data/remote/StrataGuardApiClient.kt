@@ -1,24 +1,51 @@
 package com.strataguard.app.data.remote
 
+import com.strataguard.app.data.strata.StrataDocument
+import io.ktor.client.call.body
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.readRawBytes
 import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import kotlinx.serialization.Serializable
-
-// 10.0.2.2 is the Android emulator's alias for the host machine's localhost
-private const val BASE_URL = "http://10.0.2.2:8080"
 
 class StrataGuardApiClient {
     private val client = createPlatformHttpClient()
 
     suspend fun generatePdf(request: PdfExportRequest): Result<ByteArray> = runCatching {
-        val response = client.post("$BASE_URL/api/v1/disputes/generate-pdf") {
+        val response = client.post("$serverBaseUrl/api/v1/disputes/generate-pdf") {
             contentType(ContentType.Application.Json)
             setBody(request)
         }
         response.readRawBytes()
+    }
+
+    suspend fun uploadDocument(
+        planNumber: String,
+        bytes: ByteArray,
+        filename: String,
+        title: String?,
+        docType: String,
+    ): Result<StrataDocument> = runCatching {
+        client.post("$serverBaseUrl/api/v1/strata/$planNumber/documents") {
+            setBody(MultiPartFormDataContent(formData {
+                append("file", bytes, Headers.build {
+                    append(HttpHeaders.ContentDisposition, "filename=\"$filename\"")
+                    append(HttpHeaders.ContentType, "application/pdf")
+                })
+                if (title != null) append("title", title)
+                append("docType", docType)
+            }))
+        }.body<StrataDocument>()
+    }
+
+    suspend fun listDocuments(planNumber: String): Result<List<StrataDocument>> = runCatching {
+        client.get("$serverBaseUrl/api/v1/strata/$planNumber/documents").body<List<StrataDocument>>()
     }
 }
 

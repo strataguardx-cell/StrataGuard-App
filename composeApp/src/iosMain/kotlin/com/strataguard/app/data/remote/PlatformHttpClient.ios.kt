@@ -11,3 +11,6 @@ actual fun createPlatformHttpClient(): HttpClient = HttpClient(Darwin) {
         json(Json { ignoreUnknownKeys = true })
     }
 }
+
+// iOS simulator reaches the host machine via localhost
+actual val serverBaseUrl: String = "http://localhost:8080"

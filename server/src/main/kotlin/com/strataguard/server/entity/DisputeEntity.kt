@@ -34,7 +34,7 @@ data class DisputeEntity(
     @Column(nullable = false, length = 30)
     var status: String = "draft",
 
-    @Column(name = "risk_score", precision = 3, scale = 2)
+    @Column(name = "risk_score")
     var riskScore: Double? = null,
 
     @JdbcTypeCode(SqlTypes.JSON)

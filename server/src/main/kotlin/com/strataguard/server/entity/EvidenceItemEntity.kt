@@ -41,7 +41,7 @@ data class EvidenceItemEntity(
     @Column(name = "ai_detection_status", nullable = false, length = 20)
     var aiDetectionStatus: String = "pending",
 
-    @Column(name = "ai_detection_score", precision = 5, scale = 4)
+    @Column(name = "ai_detection_score")
     var aiDetectionScore: Double? = null,
 
     @Column(name = "ai_detection_verdict", length = 20)

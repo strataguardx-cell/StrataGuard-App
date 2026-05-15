@@ -2,6 +2,9 @@ package com.strataguard.app.platform
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.usePinned
 import platform.UIKit.UIApplication
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageJPEGRepresentation
@@ -11,6 +14,7 @@ import platform.UIKit.UIImagePickerControllerOriginalImage
 import platform.UIKit.UIImagePickerControllerSourceType
 import platform.UIKit.UINavigationControllerDelegateProtocol
 import platform.darwin.NSObject
+import platform.posix.memcpy
 
 @Composable
 actual fun rememberImagePickerHandler(
@@ -57,9 +61,11 @@ private class PickerDelegate(
         image?.let {
             val data = UIImageJPEGRepresentation(it, 0.85)
             data?.let { nsData ->
-                val bytes = ByteArray(nsData.length.toInt())
-                nsData.bytes?.let { ptr ->
-                    for (i in bytes.indices) bytes[i] = (ptr + i)!!.readBytes(1)[0]
+                @OptIn(ExperimentalForeignApi::class)
+                val bytes = ByteArray(nsData.length.toInt()).also { buf ->
+                    buf.usePinned { pinned ->
+                        memcpy(pinned.addressOf(0), nsData.bytes, nsData.length)
+                    }
                 }
                 onPicked(bytes, isCamera)
             }

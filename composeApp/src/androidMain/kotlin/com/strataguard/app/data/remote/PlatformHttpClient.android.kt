@@ -11,3 +11,6 @@ actual fun createPlatformHttpClient(): HttpClient = HttpClient(OkHttp) {
         json(Json { ignoreUnknownKeys = true })
     }
 }
+
+// Android emulator routes 10.0.2.2 to the host machine's localhost
+actual val serverBaseUrl: String = "http://10.0.2.2:8080"

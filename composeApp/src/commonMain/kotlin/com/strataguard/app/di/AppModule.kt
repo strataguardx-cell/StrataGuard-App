@@ -28,7 +28,7 @@ val appModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { SearchStrataViewModel(get()) }
-    viewModel { params -> StrataPlanDetailViewModel(get(), params.get()) }
+    viewModel { params -> StrataPlanDetailViewModel(get(), get(), params.get()) }
     viewModel { EvidenceViewModel(get()) }
     viewModel { DisputeViewModel(get(), get()) }
 }

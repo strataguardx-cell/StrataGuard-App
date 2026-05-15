@@ -69,7 +69,7 @@ fun DisputeListScreen(onNavigateBack: () -> Unit) {
                             onAssess = { vm.runAssessment(dispute.id) },
                             onExport = { vm.exportPdf(dispute) },
                             onDelete = { vm.deleteDispute(dispute.id) },
-                            isAssessing = state.isAssessing,
+                            isAssessing = state.assessingDisputeId == dispute.id,
                             isExporting = state.exportingDisputeId == dispute.id,
                         )
                     }

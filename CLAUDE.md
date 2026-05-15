@@ -17,8 +17,10 @@ StrataGuard is a mobile app for the Australian market that empowers renters and 
 - ✅ Phase 5 app-side — Dispute Risk Check: Firestore-backed dispute CRUD, rule-based risk scoring, DisputeListScreen + DisputeViewModel, DI-wired and tested on Android
 - ✅ Know Your Rights screen — static content screen, NSW/VIC toggle, 5 expandable sections per state (rights, tribunal scope, filing steps, deadlines, resources), tested on Android
 
-**NOT STARTED:**
-- Phase 5 server-side — Disputes + PDF Export (server-side rule-based scoring, PDFBox tribunal evidence pack generation)
+**NOT STARTED / REMAINING:**
+- Phase 5 server-side — built and compiles (DisputeController, DisputeService, DisputeRiskService, PdfExportService with PDFBox + S3), but not yet wired end-to-end to the app (app uses Firestore; server uses PostgreSQL)
+- PDF export button in the app — "Generate Evidence Pack" trigger in DisputeListScreen calling server /api/v1/disputes/generate-pdf
+- Strata document upload + OCR pipeline (Google Cloud Vision)
 
 **Implementation notes:**
 - App uses Firestore directly for strata search and evidence (MVP shortcut). Server module will be the authoritative backend once deployed.
