@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StrataGuard — Fight Back Against Unfair Bond Deductions</title>
+  <meta name="description" content="StrataGuard gives renters and apartment owners the evidence, legal guidance, and tribunal-ready PDF packs to win bond disputes in NSW and VIC." />
+
+  <!-- Favicon placeholder -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1B2A4A;
+      --navy-light: #243659;
+      --orange: #E8A020;
+      --orange-dark: #C8881A;
+      --white: #FFFFFF;
+      --grey-50: #F8F9FA;
+      --grey-100: #F1F3F5;
+      --grey-300: #CED4DA;
+      --grey-500: #6C757D;
+      --grey-800: #343A40;
+      --green: #28A745;
+      --red: #DC3545;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--grey-800);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────────────── */
+    nav {
+      background: var(--navy);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo { color: var(--white); font-weight: 700; font-size: 1.1rem; text-decoration: none; }
+    .nav-badge {
+      background: var(--orange);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── HERO ────────────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      color: var(--white);
+      padding: 80px 24px 72px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      background: rgba(232,160,32,0.2);
+      color: var(--orange);
+      border: 1px solid rgba(232,160,32,0.4);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 720px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 span { color: var(--orange); }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: rgba(255,255,255,0.8);
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+    .hero-cta-group { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .btn-primary {
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      padding: 16px 36px;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--orange-dark); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .hero-note { color: rgba(255,255,255,0.55); font-size: 0.85rem; }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 56px;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-number { font-size: 2rem; font-weight: 800; color: var(--orange); }
+    .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+    /* ── SECTION WRAPPER ─────────────────────────────────────────────── */
+    .section { padding: 72px 24px; }
+    .section-inner { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--orange);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--grey-500);
+      max-width: 560px;
+      margin: 0 auto 52px;
+      font-size: 1rem;
+    }
+
+    /* ── PROBLEM ─────────────────────────────────────────────────────── */
+    .problem { background: var(--grey-50); }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .problem-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 28px 24px;
+      border-left: 4px solid var(--red);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .problem-card .icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .problem-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .problem-card p { font-size: 0.9rem; color: var(--grey-500); line-height: 1.5; }
+
+    /* ── HOW IT WORKS ────────────────────────────────────────────────── */
+    .steps { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .step {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding-bottom: 40px;
+      position: relative;
+    }
+    .step:last-child { padding-bottom: 0; }
+    .step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .step-connector {
+      position: absolute;
+      left: 21px;
+      top: 44px;
+      bottom: 0;
+      width: 2px;
+      background: var(--grey-300);
+    }
+    .step:last-child .step-connector { display: none; }
+    .step-content h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; margin-top: 10px; }
+    .step-content p { font-size: 0.9rem; color: var(--grey-500); line-height: 1.6; }
+    .step-tag {
+      display: inline-block;
+      background: rgba(232,160,32,0.12);
+      color: var(--orange-dark);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+
+    /* ── VALIDATION QUOTE ────────────────────────────────────────────── */
+    .question-section {
+      background: var(--navy);
+      color: var(--white);
+      text-align: center;
+      padding: 72px 24px;
+    }
+    .question-box {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .question-text {
+      font-size: clamp(1.2rem, 3vw, 1.7rem);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 32px;
+      color: var(--white);
+    }
+    .question-text .highlight { color: var(--orange); }
+    .question-sub { color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-top: 20px; }
+
+    /* ── FAKE DOOR CTA ───────────────────────────────────────────────── */
+    .cta-section { padding: 80px 24px; background: var(--grey-50); text-align: center; }
+    .price-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 480px;
+      margin: 0 auto;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      border: 2px solid var(--orange);
+    }
+    .price-badge {
+      background: var(--orange);
+      color: var(--white);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+    }
+    .price-amount {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-desc { color: var(--grey-500); font-size: 0.9rem; margin-bottom: 28px; }
+    .price-features { text-align: left; margin-bottom: 32px; }
+    .price-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--grey-100);
+      font-size: 0.9rem;
+      color: var(--grey-800);
+    }
+    .price-feature:last-child { border-bottom: none; }
+    .price-feature .check { color: var(--green); font-weight: 700; }
+    .btn-cta {
+      width: 100%;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      padding: 18px 24px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-cta:hover { background: var(--orange-dark); }
+    .price-disclaimer { font-size: 0.75rem; color: var(--grey-500); margin-top: 12px; }
+
+    /* ── WAITLIST ────────────────────────────────────────────────────── */
+    .waitlist-section { padding: 72px 24px; text-align: center; }
+    .waitlist-box {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    /* Mailchimp embed goes here — replace the placeholder below */
+    .mc-embed-placeholder {
+      background: var(--grey-50);
+      border: 2px dashed var(--grey-300);
+      border-radius: 12px;
+      padding: 32px 24px;
+      font-size: 0.85rem;
+      color: var(--grey-500);
+    }
+    /* Paste your Mailchimp embed styles here and the form below */
+    #mc_embed_signup { background: transparent !important; }
+    #mc_embed_signup .mc-field-group { margin-bottom: 12px; }
+    #mc_embed_signup input[type=email] {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--grey-300);
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    #mc_embed_signup input[type=email]:focus { border-color: var(--navy); }
+    #mc_embed_signup input[type=submit], .btn-waitlist {
+      width: 100%;
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    #mc_embed_signup input[type=submit]:hover, .btn-waitlist:hover { background: var(--navy-light); }
+
+    /* ── REGULATORY BANNER ───────────────────────────────────────────── */
+    .reg-banner {
+      background: rgba(40,167,69,0.08);
+      border: 1px solid rgba(40,167,69,0.3);
+      border-radius: 10px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      max-width: 680px;
+      margin: 0 auto 48px;
+      text-align: left;
+    }
+    .reg-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .reg-text strong { color: var(--green); font-size: 0.85rem; display: block; margin-bottom: 4px; }
+    .reg-text span { font-size: 0.85rem; color: var(--grey-500); }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.8rem;
+    }
+    footer strong { color: var(--white); }
+    footer a { color: rgba(255,255,255,0.5); }
+
+    /* ── MODAL ───────────────────────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      animation: slideUp 0.25s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--grey-500);
+      line-height: 1;
+    }
+    .modal h2 { font-size: 1.4rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+    .modal-sub { font-size: 0.9rem; color: var(--grey-500); margin-bottom: 24px; line-height: 1.5; }
+    .modal label { font-size: 0.85rem; font-weight: 600; color: var(--navy); display: block; margin-bottom: 5px; }
+    .modal input[type=email],
+    .modal input[type=text] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--grey-300);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal input:focus { border-color: var(--navy); }
+    .modal .btn-submit {
+      width: 100%;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .modal .btn-submit:hover { background: var(--orange-dark); }
+    .modal-success { display: none; text-align: center; }
+    .modal-success .success-icon { font-size: 3rem; margin-bottom: 16px; }
+    .modal-success h3 { font-size: 1.3rem; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+    .modal-success p { font-size: 0.9rem; color: var(--grey-500); line-height: 1.6; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .hero { padding: 60px 20px 52px; }
+      .hero-stats { gap: 28px; }
+      .price-card { padding: 36px 24px; }
+      .modal { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">🛡️ StrataGuard</a>
+  <span class="nav-badge">🚀 Beta — NSW &amp; VIC</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">For renters &amp; apartment owners</p>
+  <h1>Your Strata Manager Works Against You.<br /><span>StrataGuard Doesn't.</span></h1>
+  <p class="hero-sub">
+    Get building defect data, document timestamped evidence, and generate a tribunal-ready evidence pack for NCAT or VCAT — in minutes.
+  </p>
+  <div class="hero-cta-group">
+    <button class="btn-primary" onclick="openModal()">Generate My Evidence Pack — $49</button>
+    <p class="hero-note">One-time payment &middot; Formatted for NCAT &amp; VCAT &middot; NSW &amp; VIC</p>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-number">$2,500</div>
+      <div class="stat-label">Average NSW bond at risk</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">60%</div>
+      <div class="stat-label">Disputes settled before hearing<br>when evidence is strong</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">28 days</div>
+      <div class="stat-label">Typical NCAT filing deadline</div>
+    </div>
+  </div>
+</section>
+
+<!-- REGULATORY TAILWIND -->
+<section class="section">
+  <div class="section-inner">
+    <div class="reg-banner">
+      <span class="reg-icon">⚖️</span>
+      <div class="reg-text">
+        <strong>NSW Strata Reforms — July 2025</strong>
+        <span>New legislation strengthened transparency rights for residents. Strata managers are now legally required to disclose more building defect information. StrataGuard helps you exercise these rights.</span>
+      </div>
+    </div>
+
+    <!-- PROBLEM GRID -->
+    <p class="section-label">The problem</p>
+    <h2 class="section-title">The system is built for strata managers, not you</h2>
+    <p class="section-subtitle">Every app in the Australian strata market — SMATA, Resvu, StrataMax — is built for the manager. StrataGuard is the first that's entirely on your side.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon">🔒</div>
+        <h3>Building data is locked away</h3>
+        <p>Professional strata reports cost $300+. Residents are kept in the dark about defects, sinking fund health, and past disputes.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">📋</div>
+        <h3>Bond disputes are one-sided</h3>
+        <p>Agents present polished condition reports. Renters show up with phone photos and no structure. Tribunals reward preparation.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">⏰</div>
+        <h3>Deadlines are brutal</h3>
+        <p>You have 28 days from bond refusal to file at NCAT. Without a system, most renters miss their window or give up.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" style="background: var(--white);">
+  <div class="section-inner">
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">From dispute to evidence pack in minutes</h2>
+    <p class="section-subtitle">StrataGuard guides you through exactly what you need to build a strong case.</p>
+    <div class="steps" style="max-width: 560px; margin: 0 auto;">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-connector"></div>
+        <div class="step-content">
+          <h3>Search your building</h3>
+          <p>Enter your strata plan number or address. See known defects, sinking fund health, and AGM history — data your strata manager doesn't volunteer.</p>
+          <span class="step-tag">Free</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-connector"></div>
+        <div class="step-content">
+          <h3>Document your evidence</h3>
+          <p>Capture timestamped photos, log incidents, and upload strata documents. Every item is automatically checked for authenticity — so your evidence stands up in tribunal.</p>
+          <span class="step-tag">Free</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-connector"></div>
+        <div class="step-content">
+          <h3>Generate your evidence pack</h3>
+          <p>One tap produces a tribunal-ready PDF formatted for NCAT (NSW) or VCAT (VIC) — with your evidence, risk assessment, and the legal grounds for your dispute.</p>
+          <span class="step-tag">$49 one-time</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-connector"></div>
+        <div class="step-content">
+          <h3>Know your rights</h3>
+          <p>Plain-English guides to the Strata Schemes Management Act (NSW) and Owners Corporations Act (VIC) — what you can claim, how to file, and what to expect at a hearing.</p>
+          <span class="step-tag">Free</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALIDATION QUESTION -->
+<section class="question-section">
+  <div class="question-box">
+    <p class="section-label" style="color: var(--orange);">The honest question</p>
+    <p class="question-text">
+      "If you were losing <span class="highlight">$2,500 of your bond</span> today, would you pay <span class="highlight">$49</span> for a generated evidence pack with a strong success rate at NCAT?"
+    </p>
+    <button class="btn-primary" onclick="openModal()">Yes — Generate My Evidence Pack</button>
+    <p class="question-sub">We generate the PDF. You file it. Most disputes settle before the hearing date.</p>
+  </div>
+</section>
+
+<!-- PRICING / FAKE DOOR CTA -->
+<section class="cta-section" id="generate">
+  <p class="section-label">Evidence pack</p>
+  <h2 class="section-title">Everything you need to fight back</h2>
+  <p class="section-subtitle">One payment. One PDF. Formatted for your state's tribunal.</p>
+  <div class="price-card">
+    <span class="price-badge">ONE-TIME PAYMENT</span>
+    <div class="price-amount">$49</div>
+    <p class="price-desc">Per dispute &middot; NSW &amp; VIC supported</p>
+    <div class="price-features">
+      <div class="price-feature"><span class="check">✓</span> Tribunal-formatted evidence pack PDF</div>
+      <div class="price-feature"><span class="check">✓</span> AI-verified photo evidence included</div>
+      <div class="price-feature"><span class="check">✓</span> Building defect cross-reference</div>
+      <div class="price-feature"><span class="check">✓</span> Risk assessment &amp; dispute strength score</div>
+      <div class="price-feature"><span class="check">✓</span> NCAT / VCAT filing checklist</div>
+      <div class="price-feature"><span class="check">✓</span> Legal grounds summary (plain English)</div>
+    </div>
+    <button class="btn-cta" onclick="openModal()">Generate My Evidence Pack — $49</button>
+    <p class="price-disclaimer">Beta pricing. Formatted specifically for NCAT (NSW) and VCAT (VIC).</p>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist-section" id="waitlist">
+  <div class="waitlist-box">
+    <p class="section-label">Early access</p>
+    <h2 class="section-title" style="font-size: 1.8rem;">Get notified when we launch</h2>
+    <p style="color: var(--grey-500); margin-bottom: 28px; font-size: 0.95rem;">
+      Join renters and owners who want transparency in the strata system. We'll email you the moment the app is live.
+    </p>
+
+    <!--
+      ================================================================
+      MAILCHIMP EMBED — replace this block with your Mailchimp embed code
+      Steps:
+        1. Log in to Mailchimp → Audience → Signup forms → Embedded forms
+        2. Copy the embed code
+        3. Replace the placeholder div below with your Mailchimp code
+      ================================================================
+    -->
+    <div class="mc-embed-placeholder" id="mc-placeholder">
+      <p>📧 <strong>Mailchimp embed goes here</strong></p>
+      <p style="margin-top: 8px;">Replace this block with your Mailchimp embedded form code.<br />See the HTML comment above for instructions.</p>
+    </div>
+    <!--
+      EXAMPLE Mailchimp embed (replace with yours):
+
+      <div id="mc_embed_signup">
+        <form action="https://YOUR_MAILCHIMP_ACTION_URL" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <div id="mc_embed_signup_scroll">
+            <div class="mc-field-group">
+              <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Your email address" required>
+            </div>
+            <div style="position:absolute;left:-5000px;" aria-hidden="true">
+              <input type="text" name="b_XXXXX" tabindex="-1" value="">
+            </div>
+            <input type="submit" value="Join the waitlist" name="subscribe" id="mc-embedded-subscribe">
+          </div>
+        </form>
+      </div>
+    -->
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>StrataGuard</strong> &mdash; Built for Australian renters &amp; apartment owners</p>
+  <p style="margin-top: 8px;">Supports NSW (NCAT) &amp; VIC (VCAT) &middot; More states coming soon</p>
+  <p style="margin-top: 8px;">
+    All evidence stored in Australia (ap-southeast-2) &middot;
+    Privacy Act 1988 compliant &middot;
+    <a href="mailto:hello@strataguard.com.au">hello@strataguard.com.au</a>
+  </p>
+  <p style="margin-top: 16px; font-size: 0.75rem;">
+    StrataGuard is not a legal service. The evidence pack is a tool to help you present your case — it is not legal advice.
+    For complex disputes, consult a licensed strata lawyer.
+  </p>
+</footer>
+
+<!-- FAKE DOOR MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModalOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <!-- Form state -->
+    <div id="modal-form">
+      <h2>Generate Your Evidence Pack</h2>
+      <p class="modal-sub">
+        Enter your details and we'll generate a tribunal-ready PDF evidence pack for your dispute.
+        <strong>You won't be charged today</strong> — we're validating demand before we open payments.
+      </p>
+      <label for="modal-email">Email address</label>
+      <input type="email" id="modal-email" placeholder="you@example.com" required />
+      <label for="modal-plan">Strata plan number or address</label>
+      <input type="text" id="modal-plan" placeholder="e.g. SP83985 or 12 Smith St Surry Hills" />
+      <label for="modal-state">State</label>
+      <select id="modal-state" style="width:100%;padding:12px 14px;border:1.5px solid var(--grey-300);border-radius:8px;font-size:0.95rem;margin-bottom:14px;outline:none;background:white;">
+        <option value="">Select state…</option>
+        <option value="NSW">NSW (NCAT)</option>
+        <option value="VIC">VIC (VCAT)</option>
+      </select>
+      <button class="btn-submit" onclick="submitModal()">Register My Interest — $49</button>
+      <p style="font-size:0.75rem;color:var(--grey-500);margin-top:10px;text-align:center;">
+        No payment today. We'll contact you when we're ready to generate your pack.
+      </p>
+    </div>
+
+    <!-- Success state -->
+    <div class="modal-success" id="modal-success">
+      <div class="success-icon">🎉</div>
+      <h3>You're on the list!</h3>
+      <p>
+        Thanks for your interest. We're in beta and processing packs manually right now.
+        We'll email you within 24 hours to get started on your evidence pack.
+      </p>
+      <p style="margin-top: 14px; font-size: 0.85rem; color: var(--orange); font-weight: 600;">
+        In the meantime, download the app to start documenting evidence →
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Modal controls ──────────────────────────────────────────────────────────
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOnOverlay(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  function submitModal() {
+    const email = document.getElementById('modal-email').value.trim();
+    const plan  = document.getElementById('modal-plan').value.trim();
+    const state = document.getElementById('modal-state').value;
+
+    if (!email || !email.includes('@')) {
+      document.getElementById('modal-email').focus();
+      return;
+    }
+
+    // ── Send to Formspree (replace YOUR_FORM_ID with your Formspree form ID) ──
+    // Sign up free at formspree.io → create a form → copy the form ID
+    const FORMSPREE_ID = 'YOUR_FORM_ID';
+
+    fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email, plan, state, source: 'fake-door-cta' }),
+    }).catch(() => {}); // fire-and-forget; don't block UX on network failure
+
+    // Show success regardless (we don't want a failed fetch to block the UX signal)
+    document.getElementById('modal-form').style.display = 'none';
+    document.getElementById('modal-success').style.display = 'block';
+  }
+
+  // ── Keyboard close ──────────────────────────────────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>
