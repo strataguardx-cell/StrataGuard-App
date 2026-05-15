@@ -34,7 +34,14 @@ private class IosImagePickerHandler(
     }
 
     override fun captureFromCamera() {
-        presentPicker(UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera, isCamera = true)
+        val cameraAvailable = UIImagePickerController.isSourceTypeAvailable(
+            UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera
+        )
+        if (cameraAvailable) {
+            presentPicker(UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera, isCamera = true)
+        } else {
+            presentPicker(UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary, isCamera = false)
+        }
     }
 
     private fun presentPicker(source: UIImagePickerControllerSourceType, isCamera: Boolean) {
