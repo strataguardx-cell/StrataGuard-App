@@ -131,7 +131,7 @@ fun EvidenceListScreen(
                     CircularProgressIndicator(color = Navy800)
                 }
 
-                state.items.isEmpty() -> EmptyEvidenceState(picker = picker)
+                state.items.isEmpty() -> EmptyEvidenceState(picker = picker, onShowCaptureOptions = { showCaptureOptions = true })
 
                 else -> EvidenceTimeline(
                     items = state.items,
@@ -217,7 +217,7 @@ fun EvidenceListScreen(
 // ---------------------------------------------------------------------------
 
 @Composable
-private fun EmptyEvidenceState(picker: ImagePickerHandler) {
+private fun EmptyEvidenceState(picker: ImagePickerHandler, onShowCaptureOptions: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize().padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -240,12 +240,12 @@ private fun EmptyEvidenceState(picker: ImagePickerHandler) {
         Spacer(Modifier.height(32.dp))
 
         Button(
-            onClick = { picker.captureFromCamera() },
+            onClick = onShowCaptureOptions,
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Navy800),
             shape = RoundedCornerShape(10.dp),
         ) {
-            Text("📷  Capture with Camera", style = MaterialTheme.typography.labelLarge)
+            Text("📷  Add Evidence", style = MaterialTheme.typography.labelLarge)
         }
 
         Spacer(Modifier.height(12.dp))
