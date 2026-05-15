@@ -86,6 +86,7 @@ fun EvidenceListScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     var showSheet by remember { mutableStateOf(false) }
+    var showCaptureOptions by remember { mutableStateOf(false) }
 
     val picker = rememberImagePickerHandler { bytes, isFromCamera ->
         viewModel.onImageSelected(bytes, isFromCamera)
@@ -115,7 +116,7 @@ fun EvidenceListScreen(
         floatingActionButton = {
             if (state.items.isNotEmpty()) {
                 FloatingActionButton(
-                    onClick = { picker.captureFromCamera() },
+                    onClick = { showCaptureOptions = true },
                     containerColor = Navy800,
                     contentColor = Color.White,
                 ) {
@@ -143,6 +144,41 @@ fun EvidenceListScreen(
                     message = state.error!!,
                     modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp),
                 )
+            }
+        }
+    }
+
+    if (showCaptureOptions) {
+        ModalBottomSheet(
+            onDismissRequest = { showCaptureOptions = false },
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp),
+            ) {
+                Text(
+                    "Add Evidence",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = Navy800,
+                )
+                Spacer(Modifier.height(16.dp))
+                Button(
+                    onClick = { showCaptureOptions = false; picker.captureFromCamera() },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Navy800),
+                    shape = RoundedCornerShape(10.dp),
+                ) {
+                    Text("📷  Camera", style = MaterialTheme.typography.labelLarge)
+                }
+                Spacer(Modifier.height(8.dp))
+                Button(
+                    onClick = { showCaptureOptions = false; picker.pickFromGallery() },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(10.dp),
+                ) {
+                    Text("Upload from Gallery", style = MaterialTheme.typography.labelLarge, color = Navy800)
+                }
+                Spacer(Modifier.height(24.dp))
             }
         }
     }
