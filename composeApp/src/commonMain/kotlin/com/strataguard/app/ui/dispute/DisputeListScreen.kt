@@ -21,12 +21,14 @@ import org.koin.compose.viewmodel.koinViewModel
 
 private val NavyBlue = Color(0xFF1B2A4A)
 private val Amber = Color(0xFFE8A020)
+private val Green = Color(0xFF2DA05A)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DisputeListScreen(onNavigateBack: () -> Unit) {
     val vm: DisputeViewModel = koinViewModel()
     val state by vm.uiState.collectAsState()
+    var paywallDispute by remember { mutableStateOf<Dispute?>(null) }
 
     Scaffold(
         topBar = {
@@ -67,7 +69,7 @@ fun DisputeListScreen(onNavigateBack: () -> Unit) {
                         DisputeCard(
                             dispute = dispute,
                             onAssess = { vm.runAssessment(dispute.id) },
-                            onExport = { vm.exportPdf(dispute) },
+                            onExport = { paywallDispute = dispute },
                             onDelete = { vm.deleteDispute(dispute.id) },
                             isAssessing = state.assessingDisputeId == dispute.id,
                             isExporting = state.exportingDisputeId == dispute.id,
@@ -97,6 +99,18 @@ fun DisputeListScreen(onNavigateBack: () -> Unit) {
             onNotesChanged = vm::onNotesChanged,
             onSave = { vm.createDispute() },
             onDismiss = vm::dismissCreateSheet,
+        )
+    }
+
+    paywallDispute?.let { dispute ->
+        PaywallSheet(
+            dispute = dispute,
+            isExporting = state.exportingDisputeId == dispute.id,
+            onConfirmPurchase = {
+                vm.exportPdf(dispute)
+                paywallDispute = null
+            },
+            onDismiss = { paywallDispute = null },
         )
     }
 }
@@ -214,6 +228,106 @@ private fun VerdictChip(verdict: String, score: Float) {
     Surface(color = bg, shape = RoundedCornerShape(16.dp)) {
         Text(label, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp))
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PaywallSheet(
+    dispute: Dispute,
+    isExporting: Boolean,
+    onConfirmPurchase: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var purchased by remember { mutableStateOf(false) }
+
+    ModalBottomSheet(onDismissRequest = onDismiss) {
+        Column(
+            Modifier.fillMaxWidth().padding(horizontal = 24.dp).padding(bottom = 48.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            if (purchased) {
+                // Success state
+                Spacer(Modifier.height(8.dp))
+                Text("🎉", fontSize = 48.sp)
+                Text("Evidence Pack Generating!", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(
+                    "Your tribunal-ready PDF is being prepared. It will appear in your downloads shortly.",
+                    color = Color.Gray, fontSize = 14.sp,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                )
+                Spacer(Modifier.height(8.dp))
+                Button(
+                    onClick = onDismiss,
+                    modifier = Modifier.fillMaxWidth().height(52.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Green),
+                ) { Text("Done", color = Color.White, fontWeight = FontWeight.Bold) }
+            } else {
+                // Paywall state
+                Spacer(Modifier.height(8.dp))
+                Surface(
+                    color = Amber.copy(alpha = 0.12f),
+                    shape = RoundedCornerShape(12.dp),
+                ) {
+                    Text(
+                        "EVIDENCE PACK",
+                        color = Amber, fontWeight = FontWeight.Bold, fontSize = 11.sp,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    )
+                }
+
+                Text(
+                    "$49",
+                    fontWeight = FontWeight.Bold, fontSize = 48.sp, color = NavyBlue,
+                )
+                Text("one-time · per dispute", color = Color.Gray, fontSize = 13.sp)
+
+                Spacer(Modifier.height(4.dp))
+
+                // Feature list
+                val features = listOf(
+                    "📄  Tribunal-ready PDF formatted for ${dispute.tribunal}",
+                    "📸  All your evidence photos with timestamps",
+                    "⚖️  Risk assessment with score breakdown",
+                    "📋  Chronological incident timeline",
+                    "✅  AI-authenticity verification on every photo",
+                )
+                Column(
+                    Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    features.forEach { feature ->
+                        Text(feature, fontSize = 14.sp)
+                    }
+                }
+
+                Spacer(Modifier.height(8.dp))
+
+                Button(
+                    onClick = {
+                        purchased = true
+                        onConfirmPurchase()
+                    },
+                    enabled = !isExporting,
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = NavyBlue),
+                    shape = RoundedCornerShape(12.dp),
+                ) {
+                    if (isExporting) {
+                        CircularProgressIndicator(Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Generating...", color = Color.White, fontWeight = FontWeight.Bold)
+                    } else {
+                        Text("Get My Evidence Pack — $49", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    }
+                }
+
+                TextButton(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
+                    Text("Not now", color = Color.Gray)
+                }
+            }
+        }
     }
 }
 

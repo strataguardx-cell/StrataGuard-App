@@ -51,6 +51,7 @@ import coil3.compose.AsyncImage
 import com.strataguard.app.data.evidence.AiFlag
 import com.strataguard.app.data.evidence.AiVerdict
 import com.strataguard.app.data.evidence.EvidenceItem
+import com.strataguard.app.data.evidence.SyncStatus
 import com.strataguard.app.data.evidence.flags
 import com.strataguard.app.data.evidence.verdict
 import com.strataguard.app.platform.ExifAnalysisResult
@@ -275,6 +276,7 @@ private fun EmptyEvidenceState(picker: ImagePickerHandler, onShowCaptureOptions:
 
 @Composable
 private fun EvidenceTimeline(items: List<EvidenceItem>, onDelete: (String) -> Unit) {
+    val pendingCount = items.count { it.syncStatus == SyncStatus.PENDING.name }
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             Box(modifier = Modifier.fillMaxWidth().background(Navy900).padding(16.dp)) {
@@ -283,6 +285,25 @@ private fun EvidenceTimeline(items: List<EvidenceItem>, onDelete: (String) -> Un
                     style = MaterialTheme.typography.labelMedium,
                     color = Color.White.copy(alpha = 0.7f),
                 )
+            }
+        }
+        if (pendingCount > 0) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Amber100)
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text("⏳", style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        "$pendingCount item${if (pendingCount != 1) "s" else ""} waiting to upload — will sync when connected",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color(0xFF7A4A00),
+                    )
+                }
             }
         }
         items(items, key = { it.id }) { item ->
@@ -336,11 +357,22 @@ private fun EvidenceCard(item: EvidenceItem, onDelete: () -> Unit) {
         Spacer(Modifier.width(12.dp))
 
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                item.title,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = Navy800,
-            )
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(
+                    item.title,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = Navy800,
+                )
+                if (item.syncStatus == SyncStatus.PENDING.name) {
+                    Box(
+                        modifier = Modifier
+                            .background(Amber100, RoundedCornerShape(4.dp))
+                            .padding(horizontal = 4.dp, vertical = 1.dp),
+                    ) {
+                        Text("⏳ Pending", style = MaterialTheme.typography.labelSmall, color = Color(0xFF7A4A00))
+                    }
+                }
+            }
             Spacer(Modifier.height(2.dp))
             Text(formatTimestamp(item.capturedAt), style = MaterialTheme.typography.labelSmall, color = Grey500)
             if (item.description.isNotBlank()) {

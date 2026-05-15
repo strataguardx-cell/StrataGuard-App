@@ -53,6 +53,32 @@ class FirestoreStrataRepository : StrataRepository {
             col.document(plan.spNumber).set(plan)
         }
     }
+
+    override suspend fun createPlan(plan: StrataPlan) {
+        col.document(plan.spNumber.uppercase()).set(plan)
+    }
+
+    override suspend fun searchNearby(lat: Double, lng: Double, radiusKm: Double): List<Pair<StrataPlan, Double>> {
+        val all = col.get().documents
+            .mapNotNull { runCatching { it.data<StrataPlan>() }.getOrNull() }
+            .filter { it.latitude != 0.0 && it.longitude != 0.0 }
+        return all
+            .map { plan -> plan to haversineKm(lat, lng, plan.latitude, plan.longitude) }
+            .filter { (_, dist) -> dist <= radiusKm }
+            .sortedBy { (_, dist) -> dist }
+    }
+}
+
+private fun Double.toRad() = this * (kotlin.math.PI / 180.0)
+
+private fun haversineKm(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
+    val r = 6371.0
+    val dLat = (lat2 - lat1).toRad()
+    val dLng = (lng2 - lng1).toRad()
+    val a = kotlin.math.sin(dLat / 2) * kotlin.math.sin(dLat / 2) +
+        kotlin.math.cos(lat1.toRad()) * kotlin.math.cos(lat2.toRad()) *
+        kotlin.math.sin(dLng / 2) * kotlin.math.sin(dLng / 2)
+    return r * 2 * kotlin.math.atan2(kotlin.math.sqrt(a), kotlin.math.sqrt(1 - a))
 }
 
 // ---------------------------------------------------------------------------

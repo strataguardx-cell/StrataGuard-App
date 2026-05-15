@@ -13,7 +13,10 @@ data class EvidenceItem(
     val aiVerdict: String = AiVerdict.PENDING.name,
     val aiScore: Float = 0f,
     val aiFlags: List<String> = emptyList(),
+    val syncStatus: String = SyncStatus.SYNCED.name,
 )
+
+enum class SyncStatus { SYNCED, PENDING }
 
 enum class AiVerdict { PENDING, AUTHENTIC, SUSPICIOUS, AI_GENERATED }
 

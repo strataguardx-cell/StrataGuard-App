@@ -1,5 +1,9 @@
 package com.strataguard.app.data.evidence
 
+import com.strataguard.app.platform.dequeuePendingEvidence
+import com.strataguard.app.platform.enqueuePendingEvidence
+import com.strataguard.app.platform.removePendingEvidence
+import com.strataguard.app.platform.scheduleEvidenceSync
 import com.strataguard.app.platform.toThumbnailBytes
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
@@ -39,21 +43,45 @@ class FirebaseEvidenceRepository : EvidenceRepository {
             aiVerdict = verdict.name,
             aiScore = 0f,
             aiFlags = flags.map { it.name },
+            syncStatus = SyncStatus.SYNCED.name,
         )
-        col.document(id).set(item)
+
+        val uploaded = runCatching { col.document(id).set(item) }
+        if (uploaded.isFailure) {
+            // Offline — store locally and schedule background sync
+            enqueuePendingEvidence(item.copy(syncStatus = SyncStatus.PENDING.name))
+            scheduleEvidenceSync()
+            return@runCatching item.copy(syncStatus = SyncStatus.PENDING.name)
+        }
         item
     }
 
-    override suspend fun getEvidence(): List<EvidenceItem> = runCatching {
-        val uid = auth.currentUser?.uid ?: return@runCatching emptyList()
-        col.where { "userId" equalTo uid }
-            .get()
-            .documents
-            .mapNotNull { runCatching { it.data<EvidenceItem>() }.getOrNull() }
-            .sortedByDescending { it.capturedAt }
-    }.getOrElse { emptyList() }
+    /** Called by the upload worker to re-persist an already-built item. */
+    suspend fun saveItem(item: EvidenceItem) {
+        col.document(item.id).set(item)
+    }
+
+    override suspend fun getEvidence(): List<EvidenceItem> {
+        val pending = dequeuePendingEvidence()
+
+        val synced = runCatching {
+            val uid = auth.currentUser?.uid ?: return@runCatching emptyList()
+            col.where { "userId" equalTo uid }
+                .get()
+                .documents
+                .mapNotNull { runCatching { it.data<EvidenceItem>() }.getOrNull() }
+        }.getOrElse { emptyList() }
+
+        // Flush any pending items that might have synced via Firestore already
+        val syncedIds = synced.map { it.id }.toSet()
+        pending.filter { it.id in syncedIds }.forEach { removePendingEvidence(it.id) }
+
+        val pendingNotYetSynced = pending.filter { it.id !in syncedIds }
+        return (pendingNotYetSynced + synced).sortedByDescending { it.capturedAt }
+    }
 
     override suspend fun deleteEvidence(id: String) {
+        removePendingEvidence(id)
         runCatching { col.document(id).delete() }
     }
 }

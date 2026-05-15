@@ -78,6 +78,7 @@ kotlin {
                 implementation(libs.koin.android)
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.androidx.exifinterface)
+                implementation(libs.androidx.work.runtime)
             }
 
             iosMain.dependencies {

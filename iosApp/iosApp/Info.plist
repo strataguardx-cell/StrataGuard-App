@@ -15,5 +15,7 @@
 	<string>StrataGuard accesses your photo library so you can upload existing evidence photos.</string>
 	<key>NSUserNotificationUsageDescription</key>
 	<string>StrataGuard sends reminders before your tribunal filing deadlines so you never miss a date.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>StrataGuard uses your location to find strata buildings near you.</string>
 </dict>
 </plist>
