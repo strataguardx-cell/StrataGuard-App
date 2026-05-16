@@ -225,9 +225,9 @@ private fun DisputeCard(
 @Composable
 private fun VerdictChip(verdict: String, score: Float) {
     val (bg, label) = when (verdict) {
-        "STRONG" -> SuccessGreen to "STRONG  ${(score * 100).toInt()}%"
-        "MODERATE" -> Amber500 to "MODERATE  ${(score * 100).toInt()}%"
-        else -> ErrorRed to "WEAK  ${(score * 100).toInt()}%"
+        "STRONG" -> SuccessGreen to "Strong Evidence  ${(score * 100).toInt()}%"
+        "MODERATE" -> Amber500 to "Moderate Evidence  ${(score * 100).toInt()}%"
+        else -> ErrorRed to "Weak Evidence  ${(score * 100).toInt()}%"
     }
     Surface(color = bg, shape = RoundedCornerShape(16.dp)) {
         Text(label, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold,

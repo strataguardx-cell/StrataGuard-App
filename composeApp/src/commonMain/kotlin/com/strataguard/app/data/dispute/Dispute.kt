@@ -51,8 +51,8 @@ val Dispute.disputeStatusEnum: DisputeStatus
 
 val Dispute.verdictLabel: String
     get() = when (riskVerdict) {
-        "STRONG" -> "Strong Case"
-        "MODERATE" -> "Moderate Case"
-        "WEAK" -> "Weak Case"
+        "STRONG" -> "Strong Evidence"
+        "MODERATE" -> "Moderate Evidence"
+        "WEAK" -> "Weak Evidence"
         else -> "Not assessed"
     }
